@@ -8,6 +8,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer'
 import CategoryScreen from './screens/CategoryScreen'
 import FavoritesScreen from './screens/FavoritesScreen'
 import { Ionicons } from '@expo/vector-icons'
+import { Provider } from 'react-redux'
+import { store } from './store/redux/store'
 
 const Stack = createNativeStackNavigator()
 const Drawer = createDrawerNavigator()
@@ -36,25 +38,28 @@ const DrawerNavigator = () => {
 export default function App() {
     return (<>
             <StatusBar style={'light'} />
-            <NavigationContainer>
-                <Stack.Navigator screenOptions={{
-                    headerStyle: { backgroundColor: '#351401' },
-                    headerTintColor: 'white',
-                    contentStyle: { backgroundColor: '#3f2f25' },
-                }}>
-                    <Stack.Screen name={'Drawer'} component={DrawerNavigator}
-                                  options={{ title: 'All Categories', headerShown: false }} />
-                    <Stack.Screen name={'Meals'} component={MealsScreen} options={({ route, navigation }) => {
-                        return { title: route.params.title }
-                    }} />
-                    <Stack.Screen name={'Detail'} component={DetailScreen} options={{
-                        headerRight: () => {
-                            return <Button title={'Press'} />
-                        },
-                    }
-                    } />
-                </Stack.Navigator>
-            </NavigationContainer>
+            <Provider store={store}>
+                <NavigationContainer>
+                    <Stack.Navigator screenOptions={{
+                        headerStyle: { backgroundColor: '#351401' },
+                        headerTintColor: 'white',
+                        contentStyle: { backgroundColor: '#3f2f25' },
+                    }}>
+                        <Stack.Screen name={'Drawer'} component={DrawerNavigator}
+                                      options={{ title: 'All Categories', headerShown: false }} />
+                        <Stack.Screen name={'Meals'} component={MealsScreen} options={({ route, navigation }) => {
+                            return { title: route.params.title }
+                        }} />
+                        <Stack.Screen name={'Detail'} component={DetailScreen} options={{
+                            headerRight: () => {
+                                return <Button title={'Press'} />
+                            },
+                        }
+                        } />
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </Provider>
+
         </>
     )
 }
